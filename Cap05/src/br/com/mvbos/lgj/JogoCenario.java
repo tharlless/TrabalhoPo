@@ -63,6 +63,9 @@ public class JogoCenario extends CenarioPadrao {
 
 	private Sequencer seqSomDeFundo;
 
+	//Alteração para infinito
+	private int pontuacaoInfinita = 0;
+
 	public JogoCenario(int largura, int altura) {
 		super(largura, altura);
 	}
@@ -191,6 +194,7 @@ public class JogoCenario extends CenarioPadrao {
 
 			} else
 				ppy++;
+				pontos += pontuacaoInfinita;
 
 		} else
 			temporizador += nivel;
@@ -341,13 +345,17 @@ public class JogoCenario extends CenarioPadrao {
 		pontos += multPontos * multPontos;
 		linhasFeistas += multPontos;
 
-		if (nivel == 9 && linhasFeistas >= 9) {
+		//#######################################################Removendo condição para que não haja vitoria. ####################################################
+
+		/*
+		 * if (nivel == 9 && linhasFeistas >= 9) {
 			estado = Estado.GANHOU;
 
 		} else if (linhasFeistas >= 9) {
 			nivel++;
 			linhasFeistas = 0;
 		}
+		 */
 
 		return multPontos > 0;
 	}
