@@ -525,7 +525,6 @@ public class JogoCenario extends CenarioPadrao {
 		// FIZ UMA ALTERAÇÃO AQUI MEU PARCEIRO =========================================================================
 		// mas não deu certo ainda mostra as 3 mas infelizmente sem sucesso.
 		int miniatura = largBloco / 4;
-		int espaco_Entre_Miniaturas = 10;
 		int[][] prxPeca = Peca.PECAS[idPrxPeca];
 		int[][] prxPeca2 = Peca.PECAS[(idPrxPeca + 1) % Peca.PECAS.length];;
 		int[][] prxPeca3 = Peca.PECAS[(idPrxPeca + 2) % Peca.PECAS.length];;

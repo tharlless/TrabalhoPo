@@ -15,6 +15,7 @@ import br.com.mvbos.lgj.base.CenarioPadrao;
 
 public class Jogo extends JFrame {
 
+	//fernando deleta isso meu parceiro.
 	private static final long serialVersionUID = 1L;
 
 	private static final int FPS = 1000 / 20;
@@ -141,7 +142,7 @@ public class Jogo extends JFrame {
 				g2d.fillRect(0, 0, JANELA_LARGURA, JANELA_ALTURA);
 
 				if (controleTecla[Tecla.BA.ordinal()]) {
-					// Pressionou espaço ou enter
+					// Pressionou espaï¿½o ou enter
 					if (cenario instanceof InicioCenario) {
 						cenario.descarregar();
 						cenario = null;
@@ -175,7 +176,7 @@ public class Jogo extends JFrame {
 
 				if (cenario == null) {
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("O Cenário é uma ilusão...", 20, 20);
+					g2d.drawString("O Cenï¿½rio ï¿½ uma ilusï¿½o...", 20, 20);
 
 				} else {
 					if (!Jogo.pausado)
