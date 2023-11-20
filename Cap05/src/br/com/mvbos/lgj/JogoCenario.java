@@ -14,7 +14,6 @@ import javax.sound.sampled.Clip;
 
 import br.com.mvbos.lgj.base.CenarioPadrao;
 import br.com.mvbos.lgj.base.Texto;
-import br.com.mvbos.lgj.br.com.mvbos.lgj.Jogo;
 
 public class JogoCenario extends CenarioPadrao {
 
@@ -62,9 +61,6 @@ public class JogoCenario extends CenarioPadrao {
 	private Clip clipMarcarLinha;
 
 	private Sequencer seqSomDeFundo;
-
-	//Alteração para infinito
-	private int pontuacaoInfinita = 0;
 
 	public JogoCenario(int largura, int altura) {
 		super(largura, altura);
@@ -151,6 +147,9 @@ public class JogoCenario extends CenarioPadrao {
 		} else if (Jogo.controleTecla[Jogo.Tecla.BAIXO.ordinal()]) {
 			if (validaMovimento(peca, ppx, ppy + 1))
 				ppy++;
+			//isso faz com que cada vez que o bloco dessa comigo segurando para baixo ganhe um ponto extra
+			pontos +=1;
+
 		}
 
 		if (depurar && Jogo.controleTecla[Jogo.Tecla.BC.ordinal()]) {
@@ -194,13 +193,12 @@ public class JogoCenario extends CenarioPadrao {
 
 			} else
 				ppy++;
-				pontos += pontuacaoInfinita;
 
 		} else
 			temporizador += nivel;
-
 	}
-
+	//==================================================================================================================
+	// AQUI GERA AS PESSAS NÃO SEI COMO FAZER PARA GERAR AS PESSAS PARA FICAR AS 3
 	public void adicionaPeca() {
 
 		ppy = -2;
@@ -320,7 +318,7 @@ public class JogoCenario extends CenarioPadrao {
 
 		return false;
 	}
-
+	// FIZ UMA ALTERAÇÃO AQUI MEU PARCEIRO =============================================================================
 	private boolean marcarLinha() {
 		int multPontos = 0;
 
@@ -333,7 +331,6 @@ public class JogoCenario extends CenarioPadrao {
 					break;
 				}
 			}
-
 			if (linhaCompleta) {
 				multPontos++;
 				for (int col = grade.length - 1; col >= 0; col--) {
@@ -341,25 +338,33 @@ public class JogoCenario extends CenarioPadrao {
 				}
 			}
 		}
-
-		pontos += multPontos * multPontos;
+		switch (multPontos) {
+			case 1:
+				pontos += 100 * nivel;
+				break;
+			case 2:
+				pontos += 300 * nivel;
+				break;
+			case 3:
+				pontos += 500 * nivel;
+				break;
+			case 4:
+				pontos += 800 * nivel;
+				break;
+			default:
+				pontos += 0;
+				break;
+		}
 		linhasFeistas += multPontos;
 
-		//#######################################################Removendo condição para que não haja vitoria. ####################################################
-
-		/*
-		 * if (nivel == 9 && linhasFeistas >= 9) {
-			estado = Estado.GANHOU;
-
-		} else if (linhasFeistas >= 9) {
+		if (linhasFeistas >= 10) {
 			nivel++;
 			linhasFeistas = 0;
 		}
-		 */
-
 		return multPontos > 0;
 	}
-
+	// FIZ UMA ALTERAÇÃO ATÉ AQUI MEU PARCEIRO =========================================================================
+	//==================================================================================================================
 	private void descerColunas() {
 		for (int col = 0; col < grade.length; col++) {
 			for (int lin = grade[0].length - 1; lin >= 0; lin--) {
@@ -517,9 +522,8 @@ public class JogoCenario extends CenarioPadrao {
 				}
 			}
 		}
-
-
-		// para as miniaturas
+		// FIZ UMA ALTERAÇÃO AQUI MEU PARCEIRO =========================================================================
+		// mas não deu certo ainda mostra as 3 mas infelizmente sem sucesso.
 		int miniatura = largBloco / 4;
 		int espaco_Entre_Miniaturas = 10;
 		int[][] prxPeca = Peca.PECAS[idPrxPeca];
@@ -565,10 +569,11 @@ public class JogoCenario extends CenarioPadrao {
 				g.fillRect(x, y, miniatura - ESPACAMENTO, miniatura - ESPACAMENTO);
 			}
 		}
-
+		//==============================================================================================================
 		texto.setCor(Color.WHITE);
-		texto.desenha(g, "Level: " + nivel + " - " + linhasFeistas,  400, 20);
-		texto.desenha(g, "Score: " + String.valueOf(pontos), largura - 100, 40);
+		texto.desenha(g, "Level " + nivel, 400, 20);
+		texto.desenha(g,"Linha: "+linhasFeistas,400,40);
+		texto.desenha(g,"Pontos: "+ String.valueOf(pontos), largura - 100, 60);
 
 		if (estado != Estado.JOGANDO) {
 			texto.setCor(Color.WHITE);

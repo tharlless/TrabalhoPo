@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import br.com.mvbos.lgj.base.CenarioPadrao;
 import br.com.mvbos.lgj.base.Menu;
 import br.com.mvbos.lgj.base.Util;
-import br.com.mvbos.lgj.br.com.mvbos.lgj.Jogo;
 
 public class InicioCenario extends CenarioPadrao {
 

@@ -1,4 +1,4 @@
-package br.com.mvbos.lgj.br.com.mvbos.lgj;
+package br.com.mvbos.lgj;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import br.com.mvbos.lgj.InicioCenario;
-import br.com.mvbos.lgj.JogoCenario;
 import br.com.mvbos.lgj.base.CenarioPadrao;
 
 public class Jogo extends JFrame {
@@ -143,7 +141,7 @@ public class Jogo extends JFrame {
 				g2d.fillRect(0, 0, JANELA_LARGURA, JANELA_ALTURA);
 
 				if (controleTecla[Tecla.BA.ordinal()]) {
-					// Pressionou espaÃ§o ou enter
+					// Pressionou espaço ou enter
 					if (cenario instanceof InicioCenario) {
 						cenario.descarregar();
 						cenario = null;
@@ -177,7 +175,7 @@ public class Jogo extends JFrame {
 
 				if (cenario == null) {
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("O Cenï¿½rio ï¿½ uma ilusï¿½o...", 20, 20);
+					g2d.drawString("O Cenário é uma ilusão...", 20, 20);
 
 				} else {
 					if (!Jogo.pausado)

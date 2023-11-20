@@ -1,4 +1,5 @@
 package br.com.mvbos.lgj.base;
+
 import java.awt.Font;
 import java.awt.Graphics2D;
 
