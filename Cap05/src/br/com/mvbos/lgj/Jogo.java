@@ -15,7 +15,7 @@ import br.com.mvbos.lgj.base.CenarioPadrao;
 
 public class Jogo extends JFrame {
 
-	//fernando deleta isso meu parceiro.
+	//ok
 	private static final long serialVersionUID = 1L;
 
 	private static final int FPS = 1000 / 20;
