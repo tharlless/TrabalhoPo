@@ -319,6 +319,7 @@ public class JogoCenario extends CenarioPadrao {
 		return false;
 	}
 	// FIZ UMA ALTERAÇÃO AQUI MEU PARCEIRO =============================================================================
+	//Chamar Nivel a direita
 	private boolean marcarLinha() {
 		int multPontos = 0;
 

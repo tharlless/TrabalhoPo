@@ -1,21 +1,20 @@
 package br.com.mvbos.lgj;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.com.mvbos.lgj.base.CenarioPadrao;
 
+//Biblioteca Importada
+import java.awt.*;
+
 public class Jogo extends JFrame {
 
-	//ok
 	private static final long serialVersionUID = 1L;
 
 	private static final int FPS = 1000 / 20;
@@ -25,6 +24,8 @@ public class Jogo extends JFrame {
 	private static final int JANELA_LARGURA = 500;
 
 	private JPanel tela;
+	private JPanel telaEsquerda;
+	private JPanel telaDireita;
 
 	private Graphics2D g2d;
 
@@ -98,6 +99,25 @@ public class Jogo extends JFrame {
 
 		g2d = buffer.createGraphics();
 
+		//Cria painel
+		//painel esquerdo e Direito
+		telaEsquerda = new JPanel();
+		telaDireita = new JPanel();
+
+		telaEsquerda.setPreferredSize(new Dimension(200, getHeight()));
+		telaDireita.setPreferredSize(new Dimension(200, getHeight()));
+
+        telaEsquerda.setBackground(Color.black);
+        telaDireita.setBackground(Color.black);
+
+        telaEsquerda.add(new JLabel("Painel Para Blocos"));
+        telaDireita.add(new JLabel("Painel Para Dados"));
+
+        add(telaEsquerda, BorderLayout.WEST);
+        add(telaDireita, BorderLayout.EAST);
+
+
+		//painel central
 		tela = new JPanel() {
 			private static final long serialVersionUID = 1L;
 
@@ -118,12 +138,14 @@ public class Jogo extends JFrame {
 		};
 
 		getContentPane().add(tela);
+		setTitle("Jogo do tetris meu Parceiro");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		pack();
 
 		setVisible(true);
 		tela.repaint();
+
 
 	}
 
@@ -142,7 +164,7 @@ public class Jogo extends JFrame {
 				g2d.fillRect(0, 0, JANELA_LARGURA, JANELA_ALTURA);
 
 				if (controleTecla[Tecla.BA.ordinal()]) {
-					// Pressionou espa�o ou enter
+					// Pressionou espaço ou enter
 					if (cenario instanceof InicioCenario) {
 						cenario.descarregar();
 						cenario = null;
@@ -176,7 +198,7 @@ public class Jogo extends JFrame {
 
 				if (cenario == null) {
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("O Cen�rio � uma ilus�o...", 20, 20);
+					g2d.drawString("O Cenário é uma ilusão...", 20, 20);
 
 				} else {
 					if (!Jogo.pausado)
