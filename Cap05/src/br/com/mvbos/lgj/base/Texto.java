@@ -12,7 +12,7 @@ public class Texto extends Elemento {
 	}
 
 	public Texto(int tamanho) {
-		this("Tahoma", tamanho);
+		this("Tamanho", tamanho);
 	}
 
 	public Texto(String nomeFonte, int tamanho) {

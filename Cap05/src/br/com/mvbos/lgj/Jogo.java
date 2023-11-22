@@ -34,7 +34,7 @@ public class Jogo extends JFrame {
 	private CenarioPadrao cenario;
 
 	public enum Tecla {
-		CIMA, BAIXO, ESQUERDA, DIREITA, BA, BB, BC
+		CIMA, BAIXO, ESQUERDA, DIREITA, BA, BB, BC, ENTER
 	}
 
 	public static boolean[] controleTecla = new boolean[Tecla.values().length];
@@ -110,8 +110,8 @@ public class Jogo extends JFrame {
         telaEsquerda.setBackground(Color.black);
         telaDireita.setBackground(Color.black);
 
-        telaEsquerda.add(new JLabel("Painel Para Blocos"));
-        telaDireita.add(new JLabel("Painel Para Dados"));
+        telaEsquerda.add(new JLabel("Painel Para Dados"));
+        telaDireita.add(new JLabel("Painel Para Blocos"));
 
         add(telaEsquerda, BorderLayout.WEST);
         add(telaDireita, BorderLayout.EAST);
@@ -138,7 +138,7 @@ public class Jogo extends JFrame {
 		};
 
 		getContentPane().add(tela);
-		setTitle("Jogo do tetris meu Parceiro");
+		setTitle("Jogo do tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		pack();
@@ -152,6 +152,70 @@ public class Jogo extends JFrame {
 	private void carregarJogo() {
 		cenario = new InicioCenario(tela.getWidth(), tela.getHeight());
 		cenario.carregar();
+	}
+//Tentando Entender O lado esquerdo ################################################################
+	public void DesenhaLadoEsquerdo(){
+		long prxAtualizacao = 0;
+
+		while (true) {
+			if (System.currentTimeMillis() >= prxAtualizacao) {
+
+				g2d.setColor(Color.DARK_GRAY);
+				g2d.fillRect(0, 0, JANELA_LARGURA, JANELA_ALTURA);
+
+				if (controleTecla[Tecla.BA.ordinal()]) {
+					// Pressionou espaço ou enter
+					if (cenario instanceof InicioCenario) {
+						cenario.descarregar();
+						cenario = null;
+						cenario = new JogoCenario(tela.getWidth(), tela.getHeight());
+
+						g2d.setColor(Color.WHITE);
+						g2d.drawString("Carregando...", 20, 20);
+						tela.repaint();
+
+						cenario.carregar();
+
+					} else {
+						Jogo.pausado = !Jogo.pausado;
+					}
+
+					liberaTeclas();
+
+				} else if (controleTecla[Tecla.BB.ordinal()]) {
+					// Pressionou ESQ
+					if (!(cenario instanceof InicioCenario)) {
+						cenario.descarregar();
+
+						cenario = null;
+						cenario = new InicioCenario(tela.getWidth(), tela.getHeight());
+						cenario.carregar();
+					}
+
+					liberaTeclas();
+
+				}
+
+				if (cenario == null) {
+					g2d.setColor(Color.WHITE);
+					g2d.drawString("O Cenário é uma ilusão...", 20, 20);
+
+				} else {
+					if (!Jogo.pausado)
+						cenario.atualizar();
+					//aqui desenha os dados de pontuação
+					cenario.desenhar(g2d);
+
+					if (Jogo.pausado) {
+						g2d.setColor(Color.WHITE);
+						g2d.drawString("Pausado", tela.getWidth() / 2 - 4, tela.getHeight() / 2);
+					}
+				}
+
+				tela.repaint();
+				prxAtualizacao = System.currentTimeMillis() + FPS;
+			}
+		}
 	}
 
 	public void iniciarJogo() {
@@ -203,7 +267,7 @@ public class Jogo extends JFrame {
 				} else {
 					if (!Jogo.pausado)
 						cenario.atualizar();
-
+					//aqui desenha os dados de pontuação
 					cenario.desenhar(g2d);
 
 					if (Jogo.pausado) {
@@ -222,6 +286,7 @@ public class Jogo extends JFrame {
 		Jogo jogo = new Jogo();
 		jogo.carregarJogo();
 		jogo.iniciarJogo();
+		//jogo.DesenhaLadoEsquerdo();
 	}
 
 }

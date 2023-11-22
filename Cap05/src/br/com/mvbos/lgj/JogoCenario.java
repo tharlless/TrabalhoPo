@@ -5,12 +5,12 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.util.Random;
 
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequencer;
-import javax.sound.sampled.AudioFileFormat.Type;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.AudioFileFormat.Type;
 
 import br.com.mvbos.lgj.base.CenarioPadrao;
 import br.com.mvbos.lgj.base.Texto;
@@ -48,19 +48,22 @@ public class JogoCenario extends CenarioPadrao {
 	private int pontos;
 	private int linhasFeistas;
 
+	//Boolean para pausar SOM #######Criado
+    private boolean somPausado = false;
+
 	private boolean animar;
 	private boolean depurar;
 
 	private Estado estado = Estado.JOGANDO;
 
+	//som que criei
+	private Clip clipMusicaFundo;
 	// Som
 	private AudioInputStream as;
 
 	private Clip clipAdicionarPeca;
 
 	private Clip clipMarcarLinha;
-
-	private Sequencer seqSomDeFundo;
 
 	public JogoCenario(int largura, int altura) {
 		super(largura, altura);
@@ -83,6 +86,23 @@ public class JogoCenario extends CenarioPadrao {
 		}
 
 		try {
+			//carrega musica que criei 10 minutos
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("som/piano_quebrado.wav"));
+			clipMusicaFundo = AudioSystem.getClip();
+            clipMusicaFundo.open(audioInputStream);
+
+			clipMusicaFundo.addLineListener(new LineListener() {
+                @Override
+                public void update(LineEvent event) {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        event.getLine().close();
+                        clipMusicaFundo.setFramePosition(0);
+                        clipMusicaFundo.start();
+                    }
+                }
+            });
+
+			//codigo anterior do som das peças
 			as = AudioSystem.getAudioInputStream(new File("som/adiciona_peca.wav"));
 			clipAdicionarPeca = AudioSystem.getClip();
 			clipAdicionarPeca.open(as);
@@ -91,14 +111,8 @@ public class JogoCenario extends CenarioPadrao {
 			clipMarcarLinha = AudioSystem.getClip();
 			clipMarcarLinha.open(as);
 
-			seqSomDeFundo = MidiSystem.getSequencer();
-			seqSomDeFundo.setSequence(MidiSystem.getSequence(new File("som/piano_quebrado.mid")));
-			seqSomDeFundo.open();
-
-			seqSomDeFundo.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
-
-			seqSomDeFundo.start();
-
+			// Inicia a reprodução da musica que criei
+            clipMusicaFundo.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,12 +132,26 @@ public class JogoCenario extends CenarioPadrao {
 			clipMarcarLinha.stop();
 			clipMarcarLinha.close();
 		}
-
-		if (seqSomDeFundo != null) {
-			seqSomDeFundo.stop();
-			seqSomDeFundo.close();
-		}
+		if (clipMusicaFundo != null) {
+            clipMusicaFundo.stop();
+            clipMusicaFundo.close();
+        }
 	}
+
+	// Método para pausar ou retomar o som de fundo ########################################## mudança para pausar musica
+    private void pausarOuRetomarSomFundo() {
+        if (clipMusicaFundo != null) {
+            if (somPausado) {
+                // Se o som estiver pausado, retoma a reprodução
+                clipMusicaFundo.start();
+                somPausado = false;
+            } else {
+                // Se o som estiver sendo reproduzido, pausa a reprodução
+                clipMusicaFundo.stop();
+                somPausado = true;
+            }
+        }
+    }
 
 	@Override
 	public void atualizar() {
@@ -131,6 +159,11 @@ public class JogoCenario extends CenarioPadrao {
 		if (estado != Estado.JOGANDO) {
 			return;
 		}
+
+		if (Jogo.controleTecla[Jogo.Tecla.ENTER.ordinal()]) {
+            // Tecla "Enter" pressionada, pausa ou retoma o som
+            pausarOuRetomarSomFundo();
+        }
 
 		if (Jogo.controleTecla[Jogo.Tecla.ESQUERDA.ordinal()]) {
 			if (validaMovimento(peca, ppx - 1, ppy))
@@ -197,6 +230,7 @@ public class JogoCenario extends CenarioPadrao {
 		} else
 			temporizador += nivel;
 	}
+
 	//==================================================================================================================
 	// AQUI GERA AS PESSAS NÃO SEI COMO FAZER PARA GERAR AS PESSAS PARA FICAR AS 3
 	public void adicionaPeca() {
@@ -544,7 +578,7 @@ public class JogoCenario extends CenarioPadrao {
 
 			}
 		}
-		// isso garante que as miniaturas estejam uma debaixo da outrta
+		// isso garante que as miniaturas estejam uma debaixo da outra
 		g.setColor(Peca.Cores[(idPrxPeca+1) % Peca.PECAS.length]);
 		for (int col = 0; col < prxPeca2.length; col++) {
 			for (int lin = 0; lin < prxPeca2[col].length; lin++) {
@@ -570,6 +604,7 @@ public class JogoCenario extends CenarioPadrao {
 			}
 		}
 		//==============================================================================================================
+		//Aqui deixa todos os dados
 		texto.setCor(Color.WHITE);
 		texto.desenha(g, "Level " + nivel, 400, 20);
 		texto.desenha(g,"Linha: "+linhasFeistas,400,40);
