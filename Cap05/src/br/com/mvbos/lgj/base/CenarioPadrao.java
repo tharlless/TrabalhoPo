@@ -11,6 +11,10 @@ public abstract class CenarioPadrao {
 		this.largura = largura;
 	}
 
+	public CenarioPadrao() {
+
+	}
+
 	public abstract void carregar();
 
 	public abstract void descarregar();

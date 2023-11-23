@@ -11,6 +11,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.AudioFileFormat.Type;
+import javax.swing.*;
 
 import br.com.mvbos.lgj.base.CenarioPadrao;
 import br.com.mvbos.lgj.base.Texto;
@@ -45,7 +46,7 @@ public class JogoCenario extends CenarioPadrao {
 	private int[][] peca;
 
 	private int nivel = Jogo.nivel;
-	private int pontos;
+	private static int pontos;
 	private int linhasFeistas;
 
 	//Boolean para pausar SOM #######Criado
@@ -65,12 +66,23 @@ public class JogoCenario extends CenarioPadrao {
 
 	private Clip clipMarcarLinha;
 
+	public static int getPontos() {
+		return pontos;
+	}
+	public JogoCenario(){
+		super();
+	}
+
 	public JogoCenario(int largura, int altura) {
 		super(largura, altura);
 	}
 
 	@Override
 	public void carregar() {
+
+// aqui tem mudança ====================================================================================================
+		pontos = 0;
+//======================================================================================================================
 		largBloco = largura / grade.length;
 		altBloco = altura / grade[0].length;
 
@@ -219,9 +231,12 @@ public class JogoCenario extends CenarioPadrao {
 
 					if (!animar)
 						adicionaPeca();
-
+// Eu mechi aqui =======================================================================================================
 				} else {
 					estado = Estado.PERDEU;
+					Dados_Jogadores();
+
+//======================================================================================================================
 				}
 
 			} else
@@ -230,9 +245,34 @@ public class JogoCenario extends CenarioPadrao {
 		} else
 			temporizador += nivel;
 	}
+	// Eu mechi aqui ===================================================================================================
+	private void Dados_Jogadores() {
 
+		Jogadores jogador = new Jogadores();
+		Ranking ranking = new Ranking();
+
+		int pontosDoJogo = getPontos();
+
+		jogador.setPontos(pontosDoJogo);
+
+		String nomeDoJogador = JOptionPane.showInputDialog("Digite seu nome:");
+
+		jogador.setNome(nomeDoJogador);
+
+		JOptionPane.showMessageDialog(null, "Nome: " + jogador.getNome() + " / Pontos: " + jogador.getPontos());
+
+
+		ranking.carregar_dados();
+		ranking.addJogadores(jogador);
+		ranking.organizar();
+		ranking.tamanho_Lista_Top_10();
+		ranking.exibir_Top10();
+
+
+	}
 	//==================================================================================================================
-	// AQUI GERA AS PESSAS NÃO SEI COMO FAZER PARA GERAR AS PESSAS PARA FICAR AS 3
+	//==================================================================================================================
+	// AQUI GERA AS PEÇAS NÃO SEI COMO FAZER PARA GERAR AS PESSAS PARA FICAR AS 3
 	public void adicionaPeca() {
 
 		ppy = -2;
