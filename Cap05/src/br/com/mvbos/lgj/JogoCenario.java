@@ -85,7 +85,7 @@ public class JogoCenario extends CenarioPadrao {
 
 // aqui tem mudança ====================================================================================================
 		pontos = 0;
-//======================================================================================================================
+//#######################################################################################################################################
 		largBloco = largura / grade.length;
 		altBloco = altura / grade[0].length;
 
@@ -99,10 +99,10 @@ public class JogoCenario extends CenarioPadrao {
 		for (Type t : audioFileTypes) {
 			System.out.println(t.getExtension());
 		}
-
+//########################################################### Sons auterados #################################################
 		try {
 			//carrega musica que criei 10 minutos
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("som/piano_quebrado.wav"));
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("som/TetrisBgSong.wav"));
 			clipMusicaFundo = AudioSystem.getClip();
 			clipMusicaFundo.open(audioInputStream);
 
@@ -118,11 +118,11 @@ public class JogoCenario extends CenarioPadrao {
 			});
 
 			//codigo anterior do som das peças
-			as = AudioSystem.getAudioInputStream(new File("som/adiciona_peca.wav"));
+			as = AudioSystem.getAudioInputStream(new File("som/FixedPeace.wav"));
 			clipAdicionarPeca = AudioSystem.getClip();
 			clipAdicionarPeca.open(as);
 
-			as = AudioSystem.getAudioInputStream(new File("som/109662_grunz_success.wav"));
+			as = AudioSystem.getAudioInputStream(new File("som/800Points.wav"));
 			clipMarcarLinha = AudioSystem.getClip();
 			clipMarcarLinha.open(as);
 
@@ -134,7 +134,7 @@ public class JogoCenario extends CenarioPadrao {
 
 		adicionaPeca();
 	}
-
+//######################################################################### Temino dos Sons ##################################################
 	@Override
 	public void descarregar() {
 
