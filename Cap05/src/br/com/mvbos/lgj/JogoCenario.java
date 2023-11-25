@@ -262,11 +262,14 @@ public class JogoCenario extends CenarioPadrao {
 
 		jogador.setNome(nomeDoJogador);
 
-		JOptionPane.showMessageDialog(null, "Nome: " + jogador.getNome() + " / Pontos: " + jogador.getPontos());
-
 		ranking.carregar_dados();
 		ranking.addJogadores(jogador);
 		ranking.organizar();
+
+		int posicao_Ultimo_Jogador = ranking.ranking.indexOf(jogador) + 1;
+		JOptionPane.showMessageDialog(null,  posicao_Ultimo_Jogador+" no Ranking / Nome: " + jogador.getNome() + " / Pontos: " + jogador.getPontos());
+
+		ranking.salvar_dado();
 		ranking.tamanho_Lista_Top_10();
 		ranking.exibir_Top10();
 	}

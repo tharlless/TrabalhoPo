@@ -17,7 +17,6 @@ public class Ranking {
 
     public  void  addJogadores(Jogadores jogadores){
         ranking.add(jogadores);
-        salvar_dado();
     }
     public void carregar_dados(){
         Path top10 = Paths.get("C:\\Users\\fernando\\Desktop\\Cap05\\TOP10.txt");
@@ -63,7 +62,7 @@ public class Ranking {
         exibir_Top10.setVisible(true);
     }
 
-    private void salvar_dado() {
+    public void salvar_dado() {
         Path top10 = Paths.get("C:\\Users\\fernando\\Desktop\\Cap05\\TOP10.txt");
         try(BufferedWriter escrever = new BufferedWriter(new FileWriter(top10.toFile()))) {
             for(Jogadores jogadores : ranking){
