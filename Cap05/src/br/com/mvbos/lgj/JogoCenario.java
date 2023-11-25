@@ -42,6 +42,9 @@ public class JogoCenario extends CenarioPadrao {
 
 	private int idPeca = -1;
 	private int idPrxPeca = -1;
+
+	private int idPrxPeca2 = -1;
+	private int idPrxPeca3 = -1;
 	private Color corPeca;
 	private int[][] peca;
 
@@ -50,7 +53,7 @@ public class JogoCenario extends CenarioPadrao {
 	private int linhasFeistas;
 
 	//Boolean para pausar SOM #######Criado
-    private boolean somPausado = false;
+	private boolean somPausado = false;
 
 	private boolean animar;
 	private boolean depurar;
@@ -101,18 +104,18 @@ public class JogoCenario extends CenarioPadrao {
 			//carrega musica que criei 10 minutos
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("som/piano_quebrado.wav"));
 			clipMusicaFundo = AudioSystem.getClip();
-            clipMusicaFundo.open(audioInputStream);
+			clipMusicaFundo.open(audioInputStream);
 
 			clipMusicaFundo.addLineListener(new LineListener() {
-                @Override
-                public void update(LineEvent event) {
-                    if (event.getType() == LineEvent.Type.STOP) {
-                        event.getLine().close();
-                        clipMusicaFundo.setFramePosition(0);
-                        clipMusicaFundo.start();
-                    }
-                }
-            });
+				@Override
+				public void update(LineEvent event) {
+					if (event.getType() == LineEvent.Type.STOP) {
+						event.getLine().close();
+						clipMusicaFundo.setFramePosition(0);
+						clipMusicaFundo.start();
+					}
+				}
+			});
 
 			//codigo anterior do som das peças
 			as = AudioSystem.getAudioInputStream(new File("som/adiciona_peca.wav"));
@@ -124,7 +127,7 @@ public class JogoCenario extends CenarioPadrao {
 			clipMarcarLinha.open(as);
 
 			// Inicia a reprodução da musica que criei
-            clipMusicaFundo.start();
+			clipMusicaFundo.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,25 +148,25 @@ public class JogoCenario extends CenarioPadrao {
 			clipMarcarLinha.close();
 		}
 		if (clipMusicaFundo != null) {
-            clipMusicaFundo.stop();
-            clipMusicaFundo.close();
-        }
+			clipMusicaFundo.stop();
+			clipMusicaFundo.close();
+		}
 	}
 
 	// Método para pausar ou retomar o som de fundo ########################################## mudança para pausar musica
-    private void pausarOuRetomarSomFundo() {
-        if (clipMusicaFundo != null) {
-            if (somPausado) {
-                // Se o som estiver pausado, retoma a reprodução
-                clipMusicaFundo.start();
-                somPausado = false;
-            } else {
-                // Se o som estiver sendo reproduzido, pausa a reprodução
-                clipMusicaFundo.stop();
-                somPausado = true;
-            }
-        }
-    }
+	private void pausarOuRetomarSomFundo() {
+		if (clipMusicaFundo != null) {
+			if (somPausado) {
+				// Se o som estiver pausado, retoma a reprodução
+				clipMusicaFundo.start();
+				somPausado = false;
+			} else {
+				// Se o som estiver sendo reproduzido, pausa a reprodução
+				clipMusicaFundo.stop();
+				somPausado = true;
+			}
+		}
+	}
 
 	@Override
 	public void atualizar() {
@@ -173,9 +176,9 @@ public class JogoCenario extends CenarioPadrao {
 		}
 
 		if (Jogo.controleTecla[Jogo.Tecla.ENTER.ordinal()]) {
-            // Tecla "Enter" pressionada, pausa ou retoma o som
-            pausarOuRetomarSomFundo();
-        }
+			// Tecla "Enter" pressionada, pausa ou retoma o som
+			pausarOuRetomarSomFundo();
+		}
 
 		if (Jogo.controleTecla[Jogo.Tecla.ESQUERDA.ordinal()]) {
 			if (validaMovimento(peca, ppx - 1, ppy))
@@ -261,40 +264,51 @@ public class JogoCenario extends CenarioPadrao {
 
 		JOptionPane.showMessageDialog(null, "Nome: " + jogador.getNome() + " / Pontos: " + jogador.getPontos());
 
-
 		ranking.carregar_dados();
 		ranking.addJogadores(jogador);
 		ranking.organizar();
 		ranking.tamanho_Lista_Top_10();
 		ranking.exibir_Top10();
-
-
 	}
 	//==================================================================================================================
-	//==================================================================================================================
-	// AQUI GERA AS PEÇAS NÃO SEI COMO FAZER PARA GERAR AS PESSAS PARA FICAR AS 3
+	// AQUI GERA AS PEÇAS esta funcionando agora gera todas em ordem ===================================================
 	public void adicionaPeca() {
 
 		ppy = -2;
 		ppx = grade.length / 2 - 1;
 
 		// Primeira chamada
-		if (idPeca == -1)
+		if (idPeca == -1) {
 			idPeca = rand.nextInt(Peca.PECAS.length);
-		else
-			idPeca = idPrxPeca;
-		// idPeca=6;
-		idPrxPeca = rand.nextInt(Peca.PECAS.length);
-
-		// Isso acontece muito
-		if (idPeca == idPrxPeca)
 			idPrxPeca = rand.nextInt(Peca.PECAS.length);
+			if (idPeca == idPrxPeca)
+				idPrxPeca = rand.nextInt(Peca.PECAS.length);
+		}else{
+			idPeca = idPrxPeca;
+		}
+
+		// /Segunda chamada
+		if (idPrxPeca2 ==-1 ){
+			idPrxPeca2 = rand.nextInt(Peca.PECAS.length);
+		}else {
+			idPrxPeca = idPrxPeca2;
+			idPrxPeca2 = idPrxPeca3;
+		}
+		idPrxPeca3 = rand.nextInt(Peca.PECAS.length);
+		if (idPrxPeca3 == idPrxPeca2 || idPrxPeca3 == idPrxPeca || idPrxPeca3 == idPeca)
+			idPrxPeca3 = rand.nextInt(Peca.PECAS.length);
+		//==============================================================================================================
+		System.out.println("idPeca: " + idPeca);
+		System.out.println("idPrxPeca: " + idPrxPeca);
+		System.out.println("idPrxPeca2: " + idPrxPeca2);
+		System.out.println("idPrxPeca3: " + idPrxPeca3);
+		//Usei isso para verificar o id da peça, pode apagar se quiser =================================================
 
 		peca = Peca.PECAS[idPeca];
 		corPeca = Peca.Cores[idPeca];
 
 	}
-
+	// modificado ate aqui =============================================================================================
 	private void adicionarPecaNaGrade() {
 
 		for (int col = 0; col < peca.length; col++) {
@@ -598,11 +612,11 @@ public class JogoCenario extends CenarioPadrao {
 			}
 		}
 		// FIZ UMA ALTERAÇÃO AQUI MEU PARCEIRO =========================================================================
-		// mas não deu certo ainda mostra as 3 mas infelizmente sem sucesso.
+		// mas não deu certo ainda mostra as 3 mas felizmente sem sucesso.
 		int miniatura = largBloco / 4;
 		int[][] prxPeca = Peca.PECAS[idPrxPeca];
-		int[][] prxPeca2 = Peca.PECAS[(idPrxPeca + 1) % Peca.PECAS.length];;
-		int[][] prxPeca3 = Peca.PECAS[(idPrxPeca + 2) % Peca.PECAS.length];;
+		int[][] prxPeca2 = Peca.PECAS[idPrxPeca2];
+		int[][] prxPeca3 = Peca.PECAS[idPrxPeca3];
 
 
 		g.setColor(Peca.Cores[idPrxPeca]);
@@ -619,7 +633,7 @@ public class JogoCenario extends CenarioPadrao {
 			}
 		}
 		// isso garante que as miniaturas estejam uma debaixo da outra
-		g.setColor(Peca.Cores[(idPrxPeca+1) % Peca.PECAS.length]);
+		g.setColor(Peca.Cores[idPrxPeca2]);
 		for (int col = 0; col < prxPeca2.length; col++) {
 			for (int lin = 0; lin < prxPeca2[col].length; lin++) {
 				if (prxPeca2[lin][col] == 0)
@@ -631,7 +645,7 @@ public class JogoCenario extends CenarioPadrao {
 				g.fillRect(x, y, miniatura - ESPACAMENTO, miniatura - ESPACAMENTO);
 			}
 		}
-		g.setColor(Peca.Cores[(idPrxPeca+2) % Peca.PECAS.length]);
+		g.setColor(Peca.Cores[idPrxPeca3]);
 		for (int col = 0; col < prxPeca3.length; col++) {
 			for (int lin = 0; lin < prxPeca3[col].length; lin++) {
 				if (prxPeca3[lin][col] == 0)
