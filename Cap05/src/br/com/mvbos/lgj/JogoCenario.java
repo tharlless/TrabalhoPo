@@ -190,14 +190,22 @@ public class JogoCenario extends CenarioPadrao {
 		}
 
 		if (Jogo.controleTecla[Jogo.Tecla.CIMA.ordinal()]) {
-			girarReposicionarPeca(false);
+			girarReposicionarPeca(true);
 
 		} else if (Jogo.controleTecla[Jogo.Tecla.BAIXO.ordinal()]) {
-			if (validaMovimento(peca, ppx, ppy + 1))
+			if (validaMovimento(peca, ppx, ppy + 1)){
 				ppy++;
-			//isso faz com que cada vez que o bloco dessa comigo segurando para baixo ganhe um ponto extra
-			pontos +=1;
+				pontos +=1;
+			}
 
+		} else if (Jogo.controleTecla[Jogo.Tecla.Z.ordinal()]) {
+			girarReposicionarPeca(false);
+
+		} else if (Jogo.controleTecla[Jogo.Tecla.SPACE.ordinal()]) {
+			while (validaMovimento(peca, ppx, ppy + 1)){
+				ppy++;
+				pontos +=2;
+			}
 		}
 
 		if (depurar && Jogo.controleTecla[Jogo.Tecla.BC.ordinal()]) {
@@ -244,7 +252,6 @@ public class JogoCenario extends CenarioPadrao {
 
 			} else
 				ppy++;
-
 		} else
 			temporizador += nivel;
 	}
@@ -301,10 +308,10 @@ public class JogoCenario extends CenarioPadrao {
 		if (idPrxPeca3 == idPrxPeca2 || idPrxPeca3 == idPrxPeca || idPrxPeca3 == idPeca)
 			idPrxPeca3 = rand.nextInt(Peca.PECAS.length);
 		//==============================================================================================================
-		System.out.println("idPeca: " + idPeca);
-		System.out.println("idPrxPeca: " + idPrxPeca);
-		System.out.println("idPrxPeca2: " + idPrxPeca2);
-		System.out.println("idPrxPeca3: " + idPrxPeca3);
+		//System.out.println("idPeca: " + idPeca);
+		//System.out.println("idPrxPeca: " + idPrxPeca);
+		//System.out.println("idPrxPeca2: " + idPrxPeca2);
+		//System.out.println("idPrxPeca3: " + idPrxPeca3);
 		//Usei isso para verificar o id da peça, pode apagar se quiser =================================================
 
 		peca = Peca.PECAS[idPeca];
@@ -628,7 +635,7 @@ public class JogoCenario extends CenarioPadrao {
 				if (prxPeca[lin][col] == 0)
 					continue;
 
-				int x = col * miniatura + ESPACAMENTO;
+				int x = col * miniatura + ESPACAMENTO +450;
 				int y = lin * miniatura + ESPACAMENTO;
 
 				g.fillRect(x, y, miniatura - ESPACAMENTO, miniatura - ESPACAMENTO);
@@ -642,7 +649,7 @@ public class JogoCenario extends CenarioPadrao {
 				if (prxPeca2[lin][col] == 0)
 					continue;
 
-				int x = col * miniatura + ESPACAMENTO;
+				int x = col * miniatura + ESPACAMENTO+450;
 				int y = (lin + prxPeca.length+1) * miniatura + ESPACAMENTO;
 
 				g.fillRect(x, y, miniatura - ESPACAMENTO, miniatura - ESPACAMENTO);
@@ -654,7 +661,7 @@ public class JogoCenario extends CenarioPadrao {
 				if (prxPeca3[lin][col] == 0)
 					continue;
 
-				int x = col * miniatura + ESPACAMENTO;
+				int x = col * miniatura + ESPACAMENTO+450;
 				int y = (lin + prxPeca2.length+ prxPeca.length+2) * miniatura + ESPACAMENTO;
 
 				g.fillRect(x, y, miniatura - ESPACAMENTO, miniatura - ESPACAMENTO);
@@ -663,9 +670,9 @@ public class JogoCenario extends CenarioPadrao {
 		//==============================================================================================================
 		//Aqui deixa todos os dados
 		texto.setCor(Color.WHITE);
-		texto.desenha(g, "Level " + nivel, 400, 20);
-		texto.desenha(g,"Linha: "+linhasFeistas,400,40);
-		texto.desenha(g,"Pontos: "+ String.valueOf(pontos), largura - 100, 60);
+		texto.desenha(g, "Level " + nivel, 0, 20);
+		texto.desenha(g,"Linha: "+linhasFeistas,0,40);
+		texto.desenha(g,"Pontos: "+ String.valueOf(pontos), 0, 60);
 
 		if (estado != Estado.JOGANDO) {
 			texto.setCor(Color.WHITE);

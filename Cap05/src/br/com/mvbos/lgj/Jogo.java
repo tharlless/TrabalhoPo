@@ -34,7 +34,7 @@ public class Jogo extends JFrame {
 	private CenarioPadrao cenario;
 
 	public enum Tecla {
-		CIMA, BAIXO, ESQUERDA, DIREITA, BA, BB, BC, ENTER
+		CIMA, BAIXO, ESQUERDA, DIREITA, BA, BB, BC, ENTER, Z, SPACE
 	}
 
 	public static boolean[] controleTecla = new boolean[Tecla.values().length];
@@ -47,29 +47,35 @@ public class Jogo extends JFrame {
 
 	private void setaTecla(int tecla, boolean pressionada) {
 		switch (tecla) {
-		case KeyEvent.VK_UP:
-			controleTecla[Tecla.CIMA.ordinal()] = pressionada;
-			break;
-		case KeyEvent.VK_DOWN:
-			controleTecla[Tecla.BAIXO.ordinal()] = pressionada;
-			break;
-		case KeyEvent.VK_LEFT:
-			controleTecla[Tecla.ESQUERDA.ordinal()] = pressionada;
-			break;
-		case KeyEvent.VK_RIGHT:
-			controleTecla[Tecla.DIREITA.ordinal()] = pressionada;
-			break;
+			case KeyEvent.VK_UP:
+				controleTecla[Tecla.CIMA.ordinal()] = pressionada;
+				break;
+			case KeyEvent.VK_DOWN:
+				controleTecla[Tecla.BAIXO.ordinal()] = pressionada;
+				break;
+			case KeyEvent.VK_LEFT:
+				controleTecla[Tecla.ESQUERDA.ordinal()] = pressionada;
+				break;
+			case KeyEvent.VK_RIGHT:
+				controleTecla[Tecla.DIREITA.ordinal()] = pressionada;
+				break;
 
-		case KeyEvent.VK_ESCAPE:
-			controleTecla[Tecla.BB.ordinal()] = pressionada;
-			break;
+			case KeyEvent.VK_ESCAPE:
+				controleTecla[Tecla.BB.ordinal()] = pressionada;
+				break;
 
-		case KeyEvent.VK_SPACE:
-			controleTecla[Tecla.BC.ordinal()] = pressionada;
-			break;
+			case KeyEvent.VK_SPACE:
+				controleTecla[Tecla.BC.ordinal()] = pressionada;
+				controleTecla[Tecla.SPACE.ordinal()] = pressionada;
+				break;
 
-		case KeyEvent.VK_ENTER:
-			controleTecla[Tecla.BA.ordinal()] = pressionada;
+			case KeyEvent.VK_ENTER:
+				controleTecla[Tecla.BA.ordinal()] = pressionada;
+				break;
+
+			case KeyEvent.VK_Z:
+				controleTecla[Tecla.Z.ordinal()] = pressionada;
+				break;
 		}
 	}
 
